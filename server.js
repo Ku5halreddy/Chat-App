@@ -20,27 +20,9 @@ wsServer.on('connection', function (socket,req) {
     console.log("A client just connected:"+req.url);
     socket._sockname=req.url;
     // Attach some behavior to the incoming socket
+   
     //creds->{username:'', password:''}
-    socket.on('login',(creds)=>{
-        var credentials=JSON.parse(creds);
-        let password=users.get(credentials.username);
-        let errorMessage=''
-        if(password){
-            if(password==credentials.password){
-                errorMessage='Login Successful';
-                socket.emit('login', JSON.stringify({"username":credentials.username , "errorMessage":errorMessage}));
-            }
-            else{
-                errorMessage='invalid credentials';
-                socket.emit('login', JSON.stringify({"username":'', "errorMessage":errorMessage}));
-            }
-        }
-        else{
-            errorMessage='No user found with given userName';
-            socket.emit('login', JSON.stringify({"username":'' , "errorMessage":errorMessage}));
-        }
-       
-    })
+    
 
     socket.on('message', function (msg) {
         var object = JSON.parse(msg);
@@ -74,6 +56,26 @@ wsServer.on('connection', function (socket,req) {
              //   console.log(++i)
             });
         }
+        else if(object.action=='login'){
+           
+            let password=users.get(object.username);
+            let errorMessage=''
+            if(password){
+                if(password==object.password){
+                    errorMessage='Login Successful';
+                    socket.send( JSON.stringify({"action":"login","username":object.username , "errorMessage":errorMessage}));
+                }
+                else{
+                    errorMessage='invalid credentials';
+                    socket.send(JSON.stringify({"action":"login","username":'', "errorMessage":errorMessage}));
+                }
+            }
+            else{
+                errorMessage='No user found with given userName';
+                socket.send(JSON.stringify({"action":"login","username":'' , "errorMessage":errorMessage}));
+            }
+           
+        }
         else{
             console.log(object)
         }
@@ -82,7 +84,7 @@ wsServer.on('connection', function (socket,req) {
     });
 
     socket.on('close', function ()  {
-        console.log('Client disconnected:'+socket._sockname)
+        console.log('Client disconnected:'+socket._sockname);
     })
 
 });
