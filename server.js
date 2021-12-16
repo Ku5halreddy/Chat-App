@@ -82,7 +82,7 @@ wsServer.on('connection', function (socket,req) {
     });
 
     socket.on('close', function ()  {
-        console.log('Client disconnected:'+socket._sockname);
+        console.log('Client disconnected:'+socket._sockname)
     })
 
 });
