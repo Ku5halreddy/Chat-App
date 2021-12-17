@@ -47,6 +47,16 @@ wsServer.on('connection', function (socket,req) {
             }
           
         }
+        else if(object.action=='leaveRoom'){
+            //object=>{'action':'leaveRoom', 'username':'', 'roomname':''}
+           let room= rooms.get(object.roomname);
+           if(room){
+            room.delete(object.username);
+            room.forEach((client)=>{
+                client.connection.send(JSON.stringify(object));
+            })
+           }           
+        }
         else if(object.action=='sendMessage'){
             //console.log(object.text)
            // let i=0;
