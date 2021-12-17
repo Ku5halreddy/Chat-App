@@ -58,10 +58,9 @@ wsServer.on('connection', function (socket,req) {
            }           
         }
         else if(object.action=='sendMessage'){
-            //console.log(object.text)
-           // let i=0;
+            
             room.forEach(function (client) {
-               // console.log(client);
+           
                 client.connection.send(JSON.stringify(object));
              //   console.log(++i)
             });
