@@ -10,9 +10,9 @@ const wsServer = new WebSocket.Server({
 
 const rooms= new Map();
 const users=new Map();
-users.set('user1','password123');
-users.set('user2', 'password123');
-users.set('user3','password123');
+users.set('user1','1234');
+users.set('user2', '1234');
+users.set('user3','1234');
 
 
 wsServer.on('connection', function (socket,req) {
@@ -46,6 +46,7 @@ wsServer.on('connection', function (socket,req) {
                 tempRoom.set({user: object.sentby},{connection:socket });
                 socket.send(JSON.stringify(object));
                 rooms.set(object.room, tempRoom)
+                console.log('success')
             }
           
         }
