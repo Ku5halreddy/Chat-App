@@ -53,6 +53,7 @@ wsServer.on('connection', function (socket,req) {
            if(room){
             room.delete(object.username);
             room.forEach((client)=>{
+                object.newRoom=false;
                 client.connection.send(JSON.stringify(object));
             })
            }           
@@ -60,7 +61,7 @@ wsServer.on('connection', function (socket,req) {
         else if(object.action=='sendMessage'){
             
             room.forEach(function (client) {
-           
+                object.newRoom=true;
                 client.connection.send(JSON.stringify(object));
              //   console.log(++i)
             });
