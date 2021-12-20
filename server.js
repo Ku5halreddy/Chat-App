@@ -43,6 +43,7 @@ wsServer.on('connection', function (socket,req) {
             else{
                 let tempRoom=new Map();
                 tempRoom.set({user: object.sentby},{connection:socket });
+                client.connection.send(JSON.stringify(object));
                 rooms.set(object.room, tempRoom)
             }
           
