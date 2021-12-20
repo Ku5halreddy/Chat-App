@@ -63,7 +63,7 @@ wsServer.on('connection', function (socket,req) {
                else{
                 object.deleteRoom=false;
                 room.forEach((client)=>{
-                    object.deleteRoom=true;
+                    object.deleteRoom=false;
                     
                     client.connection.send(JSON.stringify(object));
                 })
