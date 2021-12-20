@@ -33,7 +33,7 @@ wsServer.on('connection', function (socket,req) {
             
             if(room){
                 room.forEach(function (client) {
-                    
+                    object.createRoom=false;
                     //client.connection.send(object.sentby+' has joined the room');
                     client.connection.send(JSON.stringify(object));
                 });
@@ -42,6 +42,7 @@ wsServer.on('connection', function (socket,req) {
             }
             else{
                 let tempRoom=new Map();
+                object.createRoom=true;
                 tempRoom.set({user: object.sentby},{connection:socket });
                 socket.send(JSON.stringify(object));
                 rooms.set(object.room, tempRoom)
@@ -52,11 +53,23 @@ wsServer.on('connection', function (socket,req) {
             //object=>{'action':'leaveRoom', 'username':'', 'roomname':''}
            let room= rooms.get(object.roomname);
            if(room){
-            room.delete(object.username);
-            room.forEach((client)=>{
-                object.newRoom=false;
-                client.connection.send(JSON.stringify(object));
-            })
+               if( room.delete(object.username)){
+                room.forEach((client)=>{
+                    object.deleteRoom=true;
+                    
+                    client.connection.send(JSON.stringify(object));
+                })
+               }
+               else{
+                object.deleteRoom=false;
+                room.forEach((client)=>{
+                    object.deleteRoom=true;
+                    
+                    client.connection.send(JSON.stringify(object));
+                })
+               }
+           
+          
            }           
         }
         else if(object.action=='sendMessage'){
