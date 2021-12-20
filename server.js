@@ -32,7 +32,7 @@ wsServer.on('connection', function (socket,req) {
         if(object.action=='joinRoom'){
             
             if(room){
-                room.set(object.sentby,{connection :socket} )
+                room.set({user: object.sentby},{connection :socket} )
                 room.forEach(function (client) {
                     object.createRoom=false;
                     //client.connection.send(object.sentby+' has joined the room');
@@ -55,7 +55,7 @@ wsServer.on('connection', function (socket,req) {
             //object=>{'action':'leaveRoom', 'username':'', 'roomname':''}
            let room= rooms.get(object.roomname);
            if(room){
-               let x=room.delete(object.username);
+               let x=room.delete({"user":object.username});
                console.log("delete:"+x);
                if( x){
                 object.deleteRoom=true;
