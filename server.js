@@ -55,7 +55,9 @@ wsServer.on('connection', function (socket,req) {
             //object=>{'action':'leaveRoom', 'username':'', 'roomname':''}
            let room= rooms.get(object.roomname);
            if(room){
-               if( room.delete(object.username)){
+               let x=room.delete(object.username);
+               console.log(x);
+               if( "delete:"+x){
                 object.deleteRoom=true;
                 room.forEach((client)=>{
                     client.connection.send(JSON.stringify(object));
