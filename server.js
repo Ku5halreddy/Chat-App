@@ -32,12 +32,13 @@ wsServer.on('connection', function (socket,req) {
         if(object.action=='joinRoom'){
             
             if(room){
+                room.set({user: object.sentby},{connection :socket} )
                 room.forEach(function (client) {
                     object.createRoom=false;
                     //client.connection.send(object.sentby+' has joined the room');
                     client.connection.send(JSON.stringify(object));
                 });
-                room.set({user: object.sentby},{connection :socket} )
+               
             
             }
             else{
